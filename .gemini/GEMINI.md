@@ -39,7 +39,7 @@ The rendering engine is modularized:
 
 ## Development Conventions
 
-- **Global Installation:** The package is designed for global installation via `npm install -g manode`. Developers can also use `npm link` or `npm install -g .` for local testing. It uses the `preferGlobal` flag to signal its intended use as a CLI utility.
+- **Global Installation:** The package is designed for global installation via `npm install -g manode-docs`. Developers can also use `npm link` or `npm install -g .` for local testing. It uses the `preferGlobal` flag to signal its intended use as a CLI utility.
 - **Modules:** Strict ESM. Always use `.js` extensions in imports (e.g., `import { x } from "./y.js"`).
 - **Monochrome Aesthetic:** To match `man(1)`, the UI is strictly monochrome. Use `bold` for headings and `dim` for blockquotes, code metadata, and secondary segments. Avoid terminal colors.
 - **Rendering Engine:**

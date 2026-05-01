@@ -1,5 +1,5 @@
 {
-  "name": "manode",
+  "name": "manode-docs",
   "version": "0.1.0",
   "description": "mandoc for Node.js - A terminal-based manual pager for viewing Node.js API documentation locally.",
   "preferGlobal": true,

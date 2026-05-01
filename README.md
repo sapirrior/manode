@@ -16,7 +16,7 @@ mandoc for Node.js - A terminal-based manual pager for documentation.
 To install `manode` globally on your system:
 
 ```bash
-npm install -g manode
+npm install -g manode-docs
 ```
 
 Once installed, you can run `manode` from any directory.
