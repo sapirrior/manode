@@ -1,18 +1,17 @@
 {
   "name": "manode-docs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "mandoc for Node.js - A terminal-based manual pager for viewing Node.js API documentation locally.",
   "preferGlobal": true,
   "bin": {
-    "manode": "./dist/cli.js"
+    "manode": "./src/cli.js"
   },
   "files": [
-    "dist",
+    "src",
     "docs",
     "README.md"
   ],
   "scripts": {
-    "build": "tsc",
     "sync": "node ./scripts/sync-docs.js"
   },
   "keywords": [
@@ -25,9 +24,7 @@
     "mandoc",
     "pager",
     "terminal",
-    "offline",
-    "ink",
-    "react"
+    "offline"
   ],
   "author": "manode",
   "license": "MIT",
@@ -42,9 +39,5 @@
   "engines": {
     "node": ">=18.0.0"
   },
-  "type": "module",
-  "devDependencies": {
-    "@types/node": "^25.6.0",
-    "typescript": "^5.7.3"
-  }
+  "type": "module"
 }

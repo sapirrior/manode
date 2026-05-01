@@ -72,31 +72,22 @@ async function run() {
     throw new Error("GitHub API returned an unexpected response.");
   }
 
-  const mdFiles = entries.filter(
-    (entry) =>
-      entry &&
-      entry.type === "file" &&
-      typeof entry.name === "string" &&
-      entry.name.endsWith(".md") &&
-      typeof entry.download_url === "string"
-  );
+  const mdFiles = entries.filter(e => e && e.type === "file" && e.name.endsWith(".md") && e.download_url);
 
   for (const file of mdFiles) {
     const outPath = path.join(OUT_DIR, file.name);
-
     try {
-      console.log(`⬇️  ${file.name}`);
+      console.log(`sync: ${file.name}`);
       const content = await fetchText(file.download_url);
       await writeAtomic(outPath, content);
     } catch (error) {
-      console.error(`❌ ${file.name}:`, error.message);
+      console.error(`error: ${file.name} - ${error.message}`);
     }
   }
-
-  console.log("✅ Done syncing docs");
+  console.log("info: sync complete");
 }
 
-run().catch((error) => {
-  console.error("Fatal:", error.message);
+run().catch(error => {
+  console.error(`error: fatal - ${error.message}`);
   process.exitCode = 1;
 });
