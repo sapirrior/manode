@@ -23,18 +23,36 @@ export type RenderLine = {
  * Returns an array of styled segments.
  */
 export function parseInline(text: string): InlineSegment[] {
+  // 1. Strip basic HTML tags
+  const cleanText = text.replace(/<[^>]*>/g, "");
+
   const segments: InlineSegment[] = [];
-  // Regex to match bold (***, ___, **, __), italic (*, _), and inline code (`)
-  // Uses non-greedy matching and word boundaries where appropriate.
-  const regex = /(\*\*\*|___|\*\*|__|(?<!\*)\*(?!\*)|(?<!_)_(?!_)|`)(.*?)\1|([^*_`]+)/g;
+  // Updated regex to include links [text](url), strikethrough ~~, and handle escapes \.
+  // We use a more complex regex that prioritizes escapes and links.
+  const regex = /(\\.)|(\[.*?\]\(.*?\))|(~~.*?~~)|(\*\*\*|___|\*\*|__|(?<!\*)\*(?!\*)|(?<!_)_(?!_)|`)(.*?)\4|([^*_`\\~\[<]+|[*_`\\~\[<])/g;
+  
   let match;
 
-  while ((match = regex.exec(text)) !== null) {
-    const [full, marker, inner, plain] = match;
+  while ((match = regex.exec(cleanText)) !== null) {
+    const [full, escape, link, strike, marker, inner, plain] = match;
 
-    if (plain) {
-      segments.push({ text: plain });
-    } else {
+    if (escape) {
+      // Escaped character: remove the backslash
+      segments.push({ text: escape.slice(1) });
+    } else if (link) {
+      // Link: [Text](URL)
+      const linkMatch = link.match(/\[(.*?)\]\((.*?)\)/);
+      if (linkMatch) {
+        segments.push({ text: linkMatch[1] });
+        segments.push({ text: ` (${linkMatch[2]})`, dim: true });
+      } else {
+        segments.push({ text: link });
+      }
+    } else if (strike) {
+      // Strikethrough: ~~text~~ (mapped to dim since ANSI strikethrough is spotty)
+      segments.push({ text: strike.slice(2, -2), dim: true });
+    } else if (marker) {
+      // Standard styles
       const segment: InlineSegment = { text: inner };
       if (marker === "***" || marker === "___") {
         segment.bold = true;
@@ -47,12 +65,14 @@ export function parseInline(text: string): InlineSegment[] {
         segment.dim = true;
       }
       segments.push(segment);
+    } else if (plain) {
+      segments.push({ text: plain });
     }
   }
 
   // Ensure at least one segment exists if there was input text
-  if (segments.length === 0 && text.length > 0) {
-    segments.push({ text });
+  if (segments.length === 0 && cleanText.length > 0) {
+    segments.push({ text: cleanText });
   }
 
   return segments;
@@ -222,9 +242,17 @@ export function getRenderLines(blocks: Block[], width: number): RenderLine[] {
         if (b.language) {
           lines.push({ segments: [{ text: "  " + b.language, dim: true }] });
         }
-        // Render each line of the code block with indentation
+        // Render each line of the code block with indentation.
+        // Truncate with an ellipsis if it exceeds the terminal width.
         b.code.split("\n").forEach((l) => {
-          lines.push({ segments: [{ text: "    " + l }] });
+          const indentedLine = "    " + l;
+          if (indentedLine.length > width) {
+            lines.push({
+              segments: [{ text: indentedLine.slice(0, width - 3) + "..." }]
+            });
+          } else {
+            lines.push({ segments: [{ text: indentedLine }] });
+          }
         });
         break;
     }
