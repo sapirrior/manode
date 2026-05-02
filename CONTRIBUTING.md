@@ -20,7 +20,7 @@ Maintain a respectful and objective tone in all interactions. We value clear and
     ```
 5.  **Run the CLI directly**:
     ```bash
-    node src/cli.js help
+    node bin/manode.js help
     ```
 ## Standards
 
@@ -41,7 +41,7 @@ The use of AI models to assist in development is allowed. However, all AI-genera
 
 ### Coding Style
 
-*   **Modular Architecture**: Every source file in src/ must be strictly **under 100 lines of code**. If a file exceeds this limit, it must be split into smaller, focused modules.
+*   **Modular Architecture**: Follow the **Unix Philosophy** ("Do one thing and do it well"). Prioritize logical separation of concerns and feature-based organization. Every file should have a single, specific responsibility. Use sub-folders (e.g., `elements/`, `utils/`, `terminal/`) to group related modules within their domains.
 *   **Plain JavaScript**: Use ES Modules (import/export). No TypeScript and no build steps.
 *   **Naming Convention**: Always use camelCase for variables, function names, and properties. Use PascalCase for classes.
 *   **Zero Dependencies**: Avoid adding new dependencies. The core application relies on native Node.js APIs and ANSI escape sequences.
@@ -65,7 +65,7 @@ Example: fix: correct table border alignment in narrow terminals
 ## Pull Request Process
 
 1.  Create a new branch for your changes.
-2.  Ensure your code follows the 100-line limit and language standards.
+2.  Ensure your code follows the modular architecture and language standards.
 3.  Test your changes manually to ensure everything works as expected.
 4.  Update the documentation if you are adding or changing features.
 5.  Submit a pull request with a clear description of your work.

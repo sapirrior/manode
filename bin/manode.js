@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-import resolveDoc from "./core/resolve.js"
-import loadDoc from "./core/load.js";
-import renderDoc from "./core/render.js"
-import { handleCommand } from "./commands/cmdHandler.js";
+import resolveDoc from "../src/core/resolve.js";
+import loadDoc from "../src/core/load.js";
+import renderDoc from "../src/core/render.js";
+import { handleCommand } from "../src/commands/cmdHandler.js";
 
 const topic = process.argv[2];
 const subTopic = process.argv[3];

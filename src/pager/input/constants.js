@@ -1,0 +1,27 @@
+export const ACTIONS = {
+  EXIT: "EXIT",
+  DOWN: "DOWN",
+  UP: "UP",
+  PAGE_DOWN: "PAGE_DOWN",
+  PAGE_UP: "PAGE_UP",
+  TOP: "TOP",
+  BOTTOM: "BOTTOM"
+};
+
+export const KEY_MAP = {
+  "\u0003": ACTIONS.EXIT,
+  "q": ACTIONS.EXIT,
+  "j": ACTIONS.DOWN,
+  "\u001b[B": ACTIONS.DOWN,
+  "\u001bOB": ACTIONS.DOWN,
+  "k": ACTIONS.UP,
+  "\u001b[A": ACTIONS.UP,
+  "\u001bOA": ACTIONS.UP,
+  " ": ACTIONS.PAGE_DOWN,
+  "f": ACTIONS.PAGE_DOWN,
+  "\u001b[6~": ACTIONS.PAGE_DOWN,
+  "b": ACTIONS.PAGE_UP,
+  "\u001b[5~": ACTIONS.PAGE_UP,
+  "g": ACTIONS.TOP,
+  "G": ACTIONS.BOTTOM
+};

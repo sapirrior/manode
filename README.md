@@ -8,7 +8,7 @@ Welcome to manode. This tool provides a cozy environment for reading Node.js API
 
 *   **Zero-Dependency TUI**: Built using native Node.js APIs and standard ANSI escape sequences. This means no external UI libraries to worry about.
 *   **Alternate Buffer Support**: manode operates in a separate terminal layer. Once you exit, your command history stays exactly how you left it.
-*   **Modular Architecture**: Every source file is kept short and focused, making the codebase straightforward to navigate.
+*   **Modular Architecture**: Built on the **Unix Philosophy** ("Do one thing and do it well"). The codebase is deeply organized into layered domains (Core, Parser, Layout, Pager) with specialized sub-folders for each task.
 *   **Monochrome Typography**: The interface uses bold, dim, and italic styles to help you find what you need without visual clutter.
 *   **Smart Layout**: A custom engine handles word-wrapping and formatting so your documentation displays correctly at any terminal size.
 
@@ -77,7 +77,7 @@ manode uses a modern ES Module architecture. There are no build steps or transpi
     ```
 2.  **Run directly**:
     ```bash
-    node src/cli.js help
+    node bin/manode.js help
     ```
 
 Please refer to CONTRIBUTING.md for our modular standards and language guidelines. We look forward to seeing your ideas.

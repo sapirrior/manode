@@ -1,19 +1,16 @@
-import { parseInline } from "./parseInline.js";
-import { wrapSegments } from "./wrapSegments.js";
+import { parseInline } from "../inline/parseInline.js";
+import { wrapSegments } from "../text/wrapSegments.js";
 
 /**
  * Renders a table block into terminal lines using a full classic grid.
- * Separates every row with horizontal lines for maximum clarity.
  */
 export function renderTable(table, width) {
   const rawRows = table.rows;
   if (rawRows.length === 0) return [];
-
   const colCount = Math.max(...rawRows.map(r => r.length));
   const rows = rawRows.map(r => [...r, ...new Array(colCount - r.length).fill("")]);
   const colWidths = new Array(colCount).fill(0);
 
-  // 1. Measure content
   rows.forEach(row => {
     row.forEach((cell, i) => {
       const cleanLen = cell.replace(/[*_`]/g, "").length;
@@ -21,7 +18,6 @@ export function renderTable(table, width) {
     });
   });
 
-  // 2. Distribute width precisely
   const totalGapWidth = colCount + 1 + (colCount * 2); 
   let availableWidth = Math.max(colCount * 2, width - totalGapWidth);
   const finalWidths = new Array(colCount).fill(2);
@@ -43,7 +39,6 @@ export function renderTable(table, width) {
     lines.push({ segments: [{ text: str, dim: true }] });
   };
 
-  // 3. Render rows
   rows.forEach((row, rowIndex) => {
     if (rowIndex === 0) drawLine("┌", "┬", "┐", "─");
     else drawLine("├", "┼", "┤", "─");
@@ -66,7 +61,6 @@ export function renderTable(table, width) {
       lines.push({ segments: lineSegs });
     }
   });
-
   drawLine("└", "┴", "┘", "─");
   return lines;
 }

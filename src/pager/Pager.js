@@ -1,17 +1,12 @@
-import { parse } from "../parser/index.js";
-import { getRenderLines } from "../layout/getRenderLines.js";
-import { TerminalState } from "./TerminalState.js";
-import { getActions, ACTIONS } from "./InputHandler.js";
+import { parse } from "../parser/parse.js";
+import { getRenderLines } from "../layout/renderer.js";
+import { ACTIONS } from "./input/constants.js";
+import { getActions } from "./input/InputHandler.js";
+import { TerminalState } from "./terminal/TerminalState.js";
 import { Renderer } from "./Renderer.js";
 
 export class Pager {
-  scrollY = 0;
-  rows = 24;
-  cols = 80;
-  blocks;
-  renderLines = [];
-  topic;
-  resolveExit;
+  scrollY = 0; rows = 24; cols = 80; blocks; renderLines = []; topic; resolveExit;
 
   constructor(content, topic) {
     this.topic = topic;
@@ -48,11 +43,9 @@ export class Pager {
   handleInput = (data) => {
     const actions = getActions(data);
     if (actions.length === 0) return;
-
     for (const action of actions) {
       const viewportHeight = this.rows - 1;
       const maxScroll = Math.max(0, this.renderLines.length - viewportHeight);
-
       switch (action) {
         case ACTIONS.EXIT: return this.exit();
         case ACTIONS.DOWN: this.scrollY = Math.min(this.scrollY + 1, maxScroll); break;
@@ -68,11 +61,8 @@ export class Pager {
 
   draw() {
     Renderer.draw({
-      rows: this.rows,
-      cols: this.cols,
-      scrollY: this.scrollY,
-      renderLines: this.renderLines,
-      topic: this.topic
+      rows: this.rows, cols: this.cols, scrollY: this.scrollY,
+      renderLines: this.renderLines, topic: this.topic
     });
   }
 

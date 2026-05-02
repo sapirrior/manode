@@ -3,18 +3,13 @@
  * Returns an array of styled segments.
  */
 export function parseInline(text) {
-  // 1. Strip basic HTML tags
   const cleanText = text.replace(/<[^>]*>/g, "");
-
   const segments = [];
-  // Updated regex to include links [text](url), strikethrough ~~, and handle escapes \.
   const regex = /(\\.)|(\[.*?\]\(.*?\))|(~~.*?~~)|(\*\*\*|___|\*\*|__|(?<!\*)\*(?!\*)|(?<!_)_(?!_)|`)(.*?)\4|([^*_`\\~\[<]+|[*_`\\~\[<])/g;
-  
   let match;
 
   while ((match = regex.exec(cleanText)) !== null) {
     const [full, escape, link, strike, marker, inner, plain] = match;
-
     if (escape) {
       segments.push({ text: escape.slice(1) });
     } else if (link) {
@@ -44,10 +39,8 @@ export function parseInline(text) {
       segments.push({ text: plain });
     }
   }
-
   if (segments.length === 0 && cleanText.length > 0) {
     segments.push({ text: cleanText });
   }
-
   return segments;
 }

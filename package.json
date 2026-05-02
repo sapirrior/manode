@@ -4,9 +4,10 @@
   "description": "mandoc for Node.js - A terminal-based manual pager for viewing Node.js API documentation locally.",
   "preferGlobal": true,
   "bin": {
-    "manode": "./src/cli.js"
+    "manode": "./bin/manode.js"
   },
   "files": [
+    "bin",
     "src",
     "docs",
     "README.md"

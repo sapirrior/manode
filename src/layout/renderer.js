@@ -1,29 +1,24 @@
-import { parseInline } from "./parseInline.js";
-import { wrapSegments } from "./wrapSegments.js";
-import { renderTable } from "./renderTable.js";
+import { parseInline } from "./inline/parseInline.js";
+import { wrapSegments } from "./text/wrapSegments.js";
+import { renderTable } from "./elements/table.js";
 
 /**
  * Converts high-level Markdown blocks into an array of renderable terminal lines.
- * Handles layout concerns like indentation, spacers, and horizontal rules.
  */
 export function getRenderLines(blocks, width) {
   const lines = [];
-
   for (const b of blocks) {
     switch (b.type) {
       case "spacer":
         lines.push({ segments: [{ text: "" }] });
         break;
-
       case "hr":
         lines.push({ segments: [{ text: "─".repeat(Math.max(1, width)), dim: true }] });
         break;
-
       case "heading":
         lines.push({ segments: [{ text: "" }] });
         lines.push({ segments: [{ text: b.text.toUpperCase(), bold: true }] });
         break;
-
       case "blockquote": {
         const segments = parseInline(b.text);
         const wrapped = wrapSegments(segments, width - 2, 0);
@@ -34,7 +29,6 @@ export function getRenderLines(blocks, width) {
         });
         break;
       }
-
       case "listItem": {
         const segments = parseInline(b.text);
         const wrapped = wrapSegments(segments, width, 4);
@@ -51,7 +45,6 @@ export function getRenderLines(blocks, width) {
         });
         break;
       }
-
       case "paragraph": {
         const segments = parseInline(b.text);
         const wrapped = wrapSegments(segments, width, 2);
@@ -60,11 +53,9 @@ export function getRenderLines(blocks, width) {
         });
         break;
       }
-
       case "table":
         lines.push(...renderTable(b, width));
         break;
-
       case "code":
         if (b.language) {
           lines.push({ segments: [{ text: "  " + b.language, dim: true }] });
@@ -82,6 +73,5 @@ export function getRenderLines(blocks, width) {
         break;
     }
   }
-
   return lines;
 }
