@@ -77,17 +77,17 @@ async function run() {
   for (const file of mdFiles) {
     const outPath = path.join(OUT_DIR, file.name);
     try {
-      console.log(`sync: ${file.name}`);
+      process.stdout.write(`sync: ${file.name}\n`);
       const content = await fetchText(file.download_url);
       await writeAtomic(outPath, content);
     } catch (error) {
-      console.error(`error: ${file.name} - ${error.message}`);
+      process.stderr.write(`error: ${file.name} - ${error.message}\n`);
     }
   }
-  console.log("info: sync complete");
+  process.stdout.write("info: sync complete\n");
 }
 
 run().catch(error => {
-  console.error(`error: fatal - ${error.message}`);
-  process.exitCode = 1;
+  process.stderr.write(`fatal: ${error.message}\n`);
+  process.exit(128);
 });

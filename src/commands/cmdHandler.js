@@ -7,9 +7,10 @@ export async function handleCommand(command) {
     await execute();
   } catch (err) {
     if (err.code === "ERR_MODULE_NOT_FOUND") {
-      console.error(`error: unknown command "${cmdName}"`);
+      process.stderr.write(`fatal: unknown command "${cmdName}"\n`);
     } else {
-      console.error(`error: command failure "${cmdName}" - ${err.message}`);
+      process.stderr.write(`fatal: command failure "${cmdName}" - ${err.message}\n`);
     }
+    process.exit(128);
   }
 }

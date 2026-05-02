@@ -12,15 +12,15 @@ export async function execute() {
       .map(f => f.replace(".md", ""));
 
     if (files.length === 0) {
-      console.log("info: no modules found");
+      process.stdout.write("info: no modules found\n");
       return;
     }
 
-    console.log("available modules:");
+    process.stdout.write("available modules:\n");
     files.sort();
-    console.log("  " + files.join(", "));
-    console.log(`total: ${files.length} modules found`);
+    process.stdout.write("  " + files.join(", ") + "\n");
+    process.stdout.write(`total: ${files.length} modules found\n`);
   } catch (error) {
-    console.error(`error: listing failure - ${error.message}`);
+    process.stderr.write(`error: listing failure - ${error.message}\n`);
   }
 }

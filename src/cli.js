@@ -8,9 +8,9 @@ const topic = process.argv[2];
 const subTopic = process.argv[3];
 
 if (!topic) {
-  console.log("usage: manode <module>");
-  console.log("example: manode help");
-  process.exit(0);
+  process.stderr.write("usage: manode <module>\n");
+  process.stderr.write("   or: manode help\n");
+  process.exit(129);
 }
 
 if (topic === "help" && subTopic === "list") {
@@ -28,6 +28,6 @@ try {
   const content = loadDoc(filePath);
   await renderDoc(content, topic);
 } catch (error) {
-  console.error(`error: ${error.message}`);
-  process.exit(1);
+  process.stderr.write(`fatal: ${error.message}\n`);
+  process.exit(128);
 }
